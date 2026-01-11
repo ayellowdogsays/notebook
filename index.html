@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻量笔记本</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📓</text></svg>">
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="app-header">
+            <div class="app-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <div class="app-title">
+                <h1>轻量笔记本</h1>
+                <p>数据存储在您的浏览器中</p>
+            </div>
+        </div>
+        
+        <div class="header-controls">
+            <button id="newNoteBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 新建笔记
+            </button>
+            <button id="exportBtn" class="btn btn-outline">
+                <i class="fas fa-download"></i> 导出
+            </button>
+        </div>
+    </header>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 侧边栏 - 笔记列表 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>我的笔记</h3>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜索笔记...">
+                </div>
+                <div class="notes-stats">
+                    <span id="notesCount">0</span> 条笔记
+                </div>
+            </div>
+            
+            <div class="notes-list" id="notesList">
+                <!-- 笔记列表会通过JS动态生成 -->
+                <div class="empty-notes" id="emptyNotes">
+                    <i class="fas fa-sticky-note"></i>
+                    <p>暂无笔记，点击上方按钮创建新笔记</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主编辑区 -->
+        <div class="editor">
+            <div class="editor-header">
+                <div class="editor-title">
+                    <input type="text" id="noteTitle" class="note-title-input" placeholder="笔记标题" maxlength="100">
+                    <span class="char-count" id="titleCharCount">0/100</span>
+                </div>
+                <div class="editor-controls">
+                    <button id="saveNoteBtn" class="btn btn-success">
+                        <i class="fas fa-save"></i> 保存
+                    </button>
+                    <button id="deleteNoteBtn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> 删除
+                    </button>
+                </div>
+            </div>
+            
+            <div class="editor-content">
+                <textarea id="noteContent" class="note-content" placeholder="开始记录您的想法..." rows="20"></textarea>
+                <div class="content-stats">
+                    <span id="contentCharCount">0 字符</span>
+                    <span id="lastSavedTime">未保存</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 导入/导出模态框 -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>导入/导出笔记</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <button class="modal-tab active" data-tab="export">导出笔记</button>
+                    <button class="modal-tab" data-tab="import">导入笔记</button>
+                </div>
+                
+                <div id="exportTab" class="modal-tab-content active">
+                    <p>将所有笔记导出为JSON文件：</p>
+                    <textarea id="exportData" readonly placeholder="导出数据将显示在这里..."></textarea>
+                    <div class="modal-actions">
+                        <button id="copyExportBtn" class="btn btn-outline">
+                            <i class="fas fa-copy"></i> 复制
+                        </button>
+                        <button id="downloadExportBtn" class="btn btn-primary">
+                            <i class="fas fa-download"></i> 下载文件
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="importTab" class="modal-tab-content">
+                    <p>导入JSON格式的笔记数据：</p>
+                    <textarea id="importData" placeholder="粘贴JSON数据或拖放文件到这里..."></textarea>
+                    <div class="file-upload">
+                        <input type="file" id="importFile" accept=".json,.txt" style="display: none;">
+                        <label for="importFile" class="btn btn-outline">
+                            <i class="fas fa-file-upload"></i> 选择文件
+                        </label>
+                        <span id="fileName">未选择文件</span>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="importBtn" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> 导入笔记
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 提示消息 -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- 脚本 -->
+    <script src="script.js"></script>
+</body>
+</html>
